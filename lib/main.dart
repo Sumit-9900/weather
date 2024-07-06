@@ -10,7 +10,10 @@ import 'package:weather_application/screens/weather_details_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables from .env file
   await dotenv.load(fileName: '.env');
+
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -36,7 +39,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print('Screen size : ${MediaQuery.of(context).size.width}');
     return MaterialApp(
       title: 'Weather App',
       debugShowCheckedModeBanner: false,
@@ -48,6 +50,8 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
+      // Navigate to WeatherDetailsScreen if isSuccessfullySearched is true
+      // Otherwise, navigate to HomeScreen
       home: prefs.getBool('isSuccessfullySearched') == true
           ? const WeatherDetailsScreen()
           : const HomeScreen(),

@@ -18,10 +18,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // SearchCity widget for user input
               const SearchCity(),
+              // Consumer widget to listen to changes in WeatherProvider
               Consumer<WeatherProvider>(
                 builder: (context, value, child) {
                   if (value.isLoading) {
+                    // Show a loading indicator if data is being fetched
                     return SizedBox(
                       height: MediaQuery.of(context).size.height / 2,
                       child: const Center(

@@ -15,12 +15,14 @@ class SearchCity extends StatefulWidget {
 }
 
 class _SearchCityState extends State<SearchCity> {
-  TextEditingController searchController = TextEditingController();
-  late WeatherModel wm;
+  TextEditingController searchController =
+      TextEditingController(); // Controller for the text field to capture user input
+  late WeatherModel wm; // Variable to store weather data
 
   @override
   void dispose() {
-    searchController.dispose();
+    searchController
+        .dispose(); // Dispose the controller when the widget is disposed
     super.dispose();
   }
 
@@ -44,6 +46,7 @@ class _SearchCityState extends State<SearchCity> {
             ),
           ),
         ),
+        // Consumer2 widget to listen to changes in WeatherProvider and SharedprefsProvider
         Consumer2<WeatherProvider, SharedprefsProvider>(
           builder: (context, value, value1, child) {
             return ElevatedButton(
@@ -52,14 +55,21 @@ class _SearchCityState extends State<SearchCity> {
                 if (city.isNotEmpty) {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  value1.setPrefs(city);
+                  value1.setPrefs(city); // Save the city to SharedPreferences
                   final currentCity = await value1.getPrefs(city);
-                  await prefs.setBool('isSuccessfullySearched', true);
-                  wm = await value.fetchData(currentCity);
-                  final des = wm.weather![0].description;
-                  final des1 = des![0].toUpperCase() + des.substring(1);
-                  final windSpeed = wm.wind!.speed! * 3.6;
+                  await prefs.setBool('isSuccessfullySearched',
+                      true); // Set the flag for successful search
+                  wm = await value.fetchData(
+                      currentCity); // Fetch weather data for the city
+                  final des =
+                      wm.weather![0].description; // Get weather description
+                  final des1 = des![0].toUpperCase() +
+                      des.substring(
+                          1); // Capitalize the first letter of description
+                  final windSpeed = wm.wind!.speed! *
+                      3.6; // Convert wind speed from m/s to km/h
                   if (!value.isLoading && context.mounted) {
+                    // Navigate to WeatherDetailsScreen with fetched data
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (ctx) => WeatherDetailsScreen(
@@ -75,7 +85,8 @@ class _SearchCityState extends State<SearchCity> {
                     );
                   }
                 } else {
-                  errorMssg('Please Enter your city!!!');
+                  errorMssg(
+                      'Please Enter your city!!!'); // Show error message if city input is empty
                 }
                 searchController.clear();
               },

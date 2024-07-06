@@ -45,14 +45,17 @@ class _WeatherDetailsScreenState extends State<WeatherDetailsScreen> {
   void getCity() async {
     provider = Provider.of<SharedprefsProvider>(context, listen: false);
     provider1 = Provider.of<WeatherProvider>(context, listen: false);
-    currentCity = await provider.getPrefs(widget.cityName);
+    currentCity = await provider
+        .getPrefs(widget.cityName); // Get city from shared preferences
     print(currentCity);
-    wm = await provider1.fetchData(currentCity);
+    wm = await provider1
+        .fetchData(currentCity); // Fetch weather data for the city
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    // Handling of weather description and wind speed for UI
     final des = wm != null ? wm!.weather![0].description! : '';
     final des1 =
         wm != null ? des[0].toUpperCase() + des.substring(1) : widget.des;
@@ -61,6 +64,7 @@ class _WeatherDetailsScreenState extends State<WeatherDetailsScreen> {
         ? '${windSpeed.toStringAsFixed(2)}\nkm/hr'
         : '${widget.windSpeed.toStringAsFixed(2)}\nkm/hr';
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -80,6 +84,7 @@ class _WeatherDetailsScreenState extends State<WeatherDetailsScreen> {
             padding: const EdgeInsets.all(15.0),
             child: Column(
               children: [
+                // Display weather icon and description
                 Container(
                   height: 125,
                   width: width > 500 ? 400 : double.infinity,
@@ -123,6 +128,7 @@ class _WeatherDetailsScreenState extends State<WeatherDetailsScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
+                // Display temperature
                 Container(
                   height: 200,
                   width: width > 500 ? 400 : double.infinity,
@@ -157,6 +163,7 @@ class _WeatherDetailsScreenState extends State<WeatherDetailsScreen> {
                   ),
                 ),
                 const SizedBox(height: 25),
+                // Display wind speed and humidity
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -235,6 +242,7 @@ class _WeatherDetailsScreenState extends State<WeatherDetailsScreen> {
                   ],
                 ),
                 const SizedBox(height: 15),
+                // Button to go back to search screen
                 ElevatedButton(
                   onPressed: () async {
                     Navigator.of(context).pushReplacement(
